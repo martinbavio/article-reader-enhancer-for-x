@@ -63,6 +63,71 @@
 }
 
 /* ============================================
+   Minimal Left Navigation - Icon Only
+   ============================================ */
+
+/* Position navigation to the left edge */
+.twitter-article-view header[role="banner"] {
+  position: fixed !important;
+  left: 0 !important;
+  top: 0 !important;
+  height: 100vh !important;
+  width: 68px !important;
+  align-items: flex-start !important;
+  padding: 8px !important;
+  z-index: 100 !important;
+}
+
+/* Hide text labels in navigation links, keep only icons */
+.twitter-article-view header[role="banner"] nav[aria-label="Primary"] a[role="link"] > div > div[dir="ltr"],
+.twitter-article-view header[role="banner"] nav[aria-label="Primary"] a[role="link"] span:not([aria-hidden]) {
+  display: none !important;
+}
+
+/* Hide "Post" button text, show only on hover */
+.twitter-article-view header[role="banner"] a[href="/compose/post"] > div {
+  width: 50px !important;
+  height: 50px !important;
+  padding: 0 !important;
+  justify-content: center !important;
+}
+
+.twitter-article-view header[role="banner"] a[href="/compose/post"] span {
+  display: none !important;
+}
+
+/* Style navigation items as icon-only buttons */
+.twitter-article-view header[role="banner"] nav[aria-label="Primary"] a[role="link"] {
+  width: 50px !important;
+  height: 50px !important;
+  padding: 12px !important;
+  justify-content: center !important;
+  border-radius: 50% !important;
+}
+
+/* Hide the "More" menu text */
+.twitter-article-view header[role="banner"] button[aria-label="More menu items"] > div > div[dir="ltr"] {
+  display: none !important;
+}
+
+/* Make account button compact */
+.twitter-article-view header[role="banner"] button[aria-label="Account menu"] {
+  width: 50px !important;
+  height: 50px !important;
+  padding: 0 !important;
+  justify-content: center !important;
+}
+
+.twitter-article-view header[role="banner"] button[aria-label="Account menu"] > div > div:not(:first-child) {
+  display: none !important;
+}
+
+/* Adjust main content to account for fixed nav */
+.twitter-article-view main {
+  margin-left: 68px !important;
+}
+
+/* ============================================
    Article View Scoped Styles
    All rules below only apply when body has .twitter-article-view class
    ============================================ */
