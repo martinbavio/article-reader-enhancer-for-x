@@ -71,22 +71,9 @@
   display: none !important;
 }
 
-/* Hide "Post" button text */
-.twitter-article-view header[role="banner"] a[href="/compose/post"] div[dir="ltr"] {
-  display: none !important;
-}
-
-/* Make Post button circular icon-only */
+/* Hide "Post" button entirely */
 .twitter-article-view header[role="banner"] a[href="/compose/post"] {
-  width: 50px !important;
-  height: 50px !important;
-  min-width: 50px !important;
-  min-height: 50px !important;
-  border-radius: 50% !important;
-  padding: 0 !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
+  display: none !important;
 }
 
 /* Hide "More" menu text */
@@ -104,6 +91,16 @@
 .twitter-article-view header[role="banner"] {
   width: auto !important;
   min-width: auto !important;
+}
+
+/* Hide floating action buttons at bottom right (Messages, Grok, etc.) */
+.twitter-article-view aside[aria-label="Messages"],
+.twitter-article-view div[data-testid="DMDrawer"],
+.twitter-article-view a[aria-label="Messages"],
+.twitter-article-view div[style*="bottom: 0"][style*="right: 0"],
+.twitter-article-view div[style*="position: fixed"][style*="bottom"],
+.twitter-article-view a[href="/messages"] {
+  display: none !important;
 }
 
 /* ============================================
