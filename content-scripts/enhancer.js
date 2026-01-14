@@ -56,7 +56,7 @@
   }
 
   /**
-   * Updates the reading progress bar based on scroll position
+   * Updates the reading progress bar based on article content scroll position
    */
   function updateProgress() {
     if (!progressBar) return;
@@ -66,13 +66,34 @@
       isUpdatingProgress = true;
 
       requestAnimationFrame(() => {
-        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        const scrollHeight = document.documentElement.scrollHeight;
-        const clientHeight = document.documentElement.clientHeight;
+        // Find the article content element
+        const articleContent = document.querySelector('[data-testid="longformRichTextComponent"]') ||
+                               document.querySelector('article[data-testid="tweet"]');
 
-        // Calculate progress percentage
-        const scrollableHeight = scrollHeight - clientHeight;
-        const progress = scrollableHeight > 0 ? (scrollTop / scrollableHeight) * 100 : 0;
+        if (!articleContent) {
+          isUpdatingProgress = false;
+          return;
+        }
+
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        const viewportHeight = window.innerHeight;
+
+        // Get the article element's position and dimensions
+        const rect = articleContent.getBoundingClientRect();
+        const articleTop = rect.top + scrollTop;
+        const articleBottom = articleTop + rect.height;
+
+        // Calculate progress: 0% when article starts at viewport top, 100% when article end reaches viewport bottom
+        const articleStart = articleTop;
+        const articleEnd = articleBottom - viewportHeight;
+        const scrollableArticleHeight = articleEnd - articleStart;
+
+        let progress = 0;
+        if (scrollableArticleHeight > 0) {
+          progress = ((scrollTop - articleStart) / scrollableArticleHeight) * 100;
+        } else if (scrollTop >= articleStart) {
+          progress = 100;
+        }
 
         // Update progress bar
         progressBar.style.setProperty('--progress', `${Math.min(100, Math.max(0, progress))}%`);
