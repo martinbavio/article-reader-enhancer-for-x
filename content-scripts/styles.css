@@ -67,6 +67,13 @@
    All rules below only apply when body has .twitter-article-view class
    ============================================ */
 
+/* Font smoothing for crisp text rendering */
+.twitter-article-view {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
 /* ============================================
    Hide Distracting Elements - Focus Mode
    ============================================ */
