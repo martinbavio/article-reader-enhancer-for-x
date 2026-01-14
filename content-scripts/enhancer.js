@@ -161,8 +161,11 @@
     const handleEl = userNameEl.querySelector('a[href][tabindex="-1"]');
     const authorHandle = handleEl?.textContent?.trim() || '';
 
-    // Get avatar image
-    const avatarImg = article.querySelector('a[href][role="link"] img[src*="profile_images"]');
+    // Get avatar image - try multiple selectors
+    let avatarImg = article.querySelector('img[src*="profile_images"]');
+    if (!avatarImg) {
+      avatarImg = article.querySelector('a[href][role="link"] img');
+    }
     const avatarSrc = avatarImg?.src || '';
 
     // Replace the "Article" text content with author info
