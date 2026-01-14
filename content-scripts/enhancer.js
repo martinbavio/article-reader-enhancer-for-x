@@ -108,23 +108,25 @@
     const main = document.querySelector('main');
     if (!main) return;
 
-    // Hide "Discover more" sections
-    const allText = main.querySelectorAll('*');
-    allText.forEach(el => {
-      const text = el.textContent?.trim() || '';
-      if ((text === 'Discover more' || text.startsWith('Discover more')) &&
-          (el.tagName === 'H2' || el.getAttribute('role') === 'heading')) {
-        // Hide the parent section
-        let parent = el.parentElement;
-        while (parent && parent !== main) {
-          if (parent.tagName === 'SECTION' || parent.tagName === 'DIV') {
-            parent.style.display = 'none';
-            break;
-          }
-          parent = parent.parentElement;
-        }
+    // Find all cells in the timeline
+    const allCells = Array.from(main.querySelectorAll('[data-testid="cellInnerDiv"]'));
+
+    // Find which cell contains "Discover more" heading
+    let discoverMoreIndex = -1;
+    allCells.forEach((cell, index) => {
+      const h2 = cell.querySelector('h2');
+      if (h2 && h2.textContent?.trim() === 'Discover more') {
+        discoverMoreIndex = index;
       }
     });
+
+    // Hide the "Discover more" cell and all cells after it
+    if (discoverMoreIndex >= 0) {
+      for (let i = discoverMoreIndex; i < allCells.length; i++) {
+        allCells[i].style.display = 'none';
+      }
+      console.log(`[Twitter Enhancer] Hidden ${allCells.length - discoverMoreIndex} "Discover more" cells`);
+    }
 
     console.log('[Twitter Enhancer] Distracting elements hidden');
   }
