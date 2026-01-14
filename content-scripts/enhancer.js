@@ -108,23 +108,6 @@
     const main = document.querySelector('main');
     if (!main) return;
 
-    // In article view, the first article element IS the article content
-    // All subsequent articles are replies that should be hidden
-    const tweets = main.querySelectorAll('article[data-testid="tweet"]');
-    tweets.forEach((tweet, index) => {
-      // Keep the first tweet (the article), hide all others (replies)
-      if (index > 0) {
-        tweet.style.display = 'none';
-      }
-    });
-
-    // Hide reply composition box using the inline_reply_offscreen container
-    const inlineReply = main.querySelector('[data-testid="inline_reply_offscreen"]');
-    if (inlineReply) {
-      inlineReply.style.display = 'none';
-      console.log('[Twitter Enhancer] Reply form hidden');
-    }
-
     // Hide "Discover more" sections
     const allText = main.querySelectorAll('*');
     allText.forEach(el => {
