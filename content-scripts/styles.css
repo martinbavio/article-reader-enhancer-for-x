@@ -1,0 +1,284 @@
+/**
+ * Article Reader Enhancer for X
+ * Aesthetic: Editorial / Literary Magazine
+ * Philosophy: Transform X's article reader into a refined reading sanctuary
+ */
+
+/* ============================================
+   CSS Variables - Color Palette & Typography
+   ============================================ */
+:root {
+  /* Use Twitter's native colors - no custom palette */
+  --progress-bar: #1d9bf0; /* Twitter blue */
+
+  /* Typography scale */
+  --font-serif: "Libre Baskerville", Georgia, "Times New Roman", serif;
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", sans-serif;
+
+  --font-size-base: 19px;
+  --font-size-lg: 21px;
+  --font-size-xl: 28px;
+  --font-size-2xl: 36px;
+  --font-size-3xl: 48px;
+
+  --line-height-tight: 1.3;
+  --line-height-base: 1.75;
+  --line-height-relaxed: 1.85;
+
+  /* Spacing system */
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 1.5rem;
+  --space-lg: 2.5rem;
+  --space-xl: 4rem;
+
+  /* Layout */
+  --content-max-width: 700px;
+  --content-padding: 3rem;
+}
+
+/* ============================================
+   Reading Progress Bar
+   ============================================ */
+#twitter-reader-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: rgba(29, 155, 240, 0.2);
+  z-index: 10000;
+  transform-origin: left;
+}
+
+#twitter-reader-progress::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: var(--progress-bar);
+  width: var(--progress, 0%);
+  transition: width 0.1s ease-out;
+}
+
+/* ============================================
+   Article View Scoped Styles
+   All rules below only apply when body has .twitter-article-view class
+   ============================================ */
+
+/* ============================================
+   Hide Distracting Elements - Focus Mode
+   ============================================ */
+/* Remove border from primary column */
+.twitter-article-view [data-testid="primaryColumn"] {
+  border-left: none !important;
+  border-right: none !important;
+}
+
+/* Hide the search/trending sidebar when viewing articles */
+.twitter-article-view aside[aria-label="Trending"],
+.twitter-article-view [data-testid="sidebarColumn"] {
+  display: none !important;
+}
+
+/* Hide inline reply form */
+.twitter-article-view [data-testid="inline_reply_offscreen"] {
+  display: none !important;
+}
+
+/* Hide the top navigation bar with "Article" heading */
+.twitter-article-view main div:has(> div > div > h2[role="heading"]) {
+  display: none !important;
+}
+
+/* Hide the top article image area */
+.twitter-article-view [data-testid="twitterArticleReadView"] > div:first-child:has(img) {
+  display: none !important;
+}
+
+/* ============================================
+   Article Title - Twitter Default Sans-serif
+   ============================================ */
+.twitter-article-view [data-testid="twitter-article-title"],
+.twitter-article-view [data-testid="twitter-article-title"] * {
+  font-family: var(--font-sans) !important;
+  font-size: 64px !important;
+  font-weight: 700 !important;
+  line-height: 1.2 !important;
+  letter-spacing: -0.02em !important;
+  margin-bottom: 40px !important;
+}
+
+/* ============================================
+   Article Content - Libre Baskerville Serif
+   ============================================ */
+.twitter-article-view [data-testid="longformRichTextComponent"],
+.twitter-article-view [data-testid="longformRichTextComponent"] * {
+  font-family: var(--font-serif) !important;
+  font-size: var(--font-size-base) !important;
+  line-height: var(--line-height-base) !important;
+  letter-spacing: 0.01em !important;
+}
+
+/* Headings within content - use sans-serif */
+.twitter-article-view [data-testid="longformRichTextComponent"] h1,
+.twitter-article-view [data-testid="longformRichTextComponent"] h1 * {
+  font-family: var(--font-sans) !important;
+  font-size: var(--font-size-3xl) !important;
+  font-weight: 700 !important;
+  line-height: var(--line-height-tight) !important;
+  margin: var(--space-xl) 0 var(--space-sm) 0 !important;
+  letter-spacing: -0.02em !important;
+}
+
+.twitter-article-view [data-testid="longformRichTextComponent"] h2,
+.twitter-article-view [data-testid="longformRichTextComponent"] h2 * {
+  font-family: var(--font-sans) !important;
+  font-size: var(--font-size-2xl) !important;
+  font-weight: 700 !important;
+  line-height: var(--line-height-tight) !important;
+  margin: var(--space-lg) 0 var(--space-md) 0 !important;
+  letter-spacing: -0.01em !important;
+}
+
+.twitter-article-view [data-testid="longformRichTextComponent"] h3,
+.twitter-article-view [data-testid="longformRichTextComponent"] h3 * {
+  font-family: var(--font-sans) !important;
+  font-size: var(--font-size-xl) !important;
+  font-weight: 600 !important;
+  line-height: var(--line-height-tight) !important;
+  margin: var(--space-lg) 0 var(--space-sm) 0 !important;
+  letter-spacing: -0.005em !important;
+}
+
+.twitter-article-view [data-testid="longformRichTextComponent"] h4,
+.twitter-article-view [data-testid="longformRichTextComponent"] h5,
+.twitter-article-view [data-testid="longformRichTextComponent"] h6,
+.twitter-article-view [data-testid="longformRichTextComponent"] h4 *,
+.twitter-article-view [data-testid="longformRichTextComponent"] h5 *,
+.twitter-article-view [data-testid="longformRichTextComponent"] h6 * {
+  font-family: var(--font-sans) !important;
+  font-size: var(--font-size-lg) !important;
+  font-weight: 600 !important;
+  line-height: var(--line-height-base) !important;
+  margin: var(--space-md) 0 var(--space-sm) 0 !important;
+}
+
+/* Paragraphs */
+.twitter-article-view [data-testid="longformRichTextComponent"] p {
+  margin: 0 0 var(--space-md) 0 !important;
+}
+
+/* First paragraph - slightly larger */
+.twitter-article-view [data-testid="longformRichTextComponent"] p:first-of-type {
+  font-size: var(--font-size-lg) !important;
+  line-height: var(--line-height-relaxed) !important;
+  margin-bottom: var(--space-lg) !important;
+}
+
+/* Drop cap for first paragraph */
+.twitter-article-view [data-testid="longformRichTextComponent"] p:first-of-type::first-letter {
+  font-family: var(--font-sans) !important;
+  font-size: 4.5em !important;
+  line-height: 0.85 !important;
+  float: left !important;
+  margin: 0.1em 0.15em 0 0 !important;
+  font-weight: 700 !important;
+}
+
+/* Blockquotes */
+.twitter-article-view [data-testid="longformRichTextComponent"] blockquote {
+  margin: var(--space-lg) 0 !important;
+  padding: var(--space-md) var(--space-lg) !important;
+  border-left: 4px solid var(--progress-bar) !important;
+  font-style: italic !important;
+  font-size: var(--font-size-lg) !important;
+  line-height: var(--line-height-relaxed) !important;
+}
+
+/* Lists */
+.twitter-article-view [data-testid="longformRichTextComponent"] ul,
+.twitter-article-view [data-testid="longformRichTextComponent"] ol {
+  margin: var(--space-md) 0 var(--space-lg) 0 !important;
+  padding-left: var(--space-lg) !important;
+}
+
+.twitter-article-view [data-testid="longformRichTextComponent"] li {
+  margin-bottom: var(--space-sm) !important;
+}
+
+/* Code */
+.twitter-article-view [data-testid="longformRichTextComponent"] code {
+  font-family: "SF Mono", Monaco, "Cascadia Code", "Consolas", monospace !important;
+  font-size: 0.9em !important;
+  padding: 0.15em 0.4em !important;
+  border-radius: 3px !important;
+}
+
+.twitter-article-view [data-testid="longformRichTextComponent"] pre {
+  padding: var(--space-md) !important;
+  border-radius: 6px !important;
+  overflow-x: auto !important;
+  margin: var(--space-lg) 0 !important;
+  border-left: 3px solid var(--progress-bar) !important;
+}
+
+.twitter-article-view [data-testid="longformRichTextComponent"] pre code {
+  background: none !important;
+  padding: 0 !important;
+}
+
+/* Images & Media */
+.twitter-article-view [data-testid="longformRichTextComponent"] img {
+  max-width: 100% !important;
+  height: auto !important;
+  margin: var(--space-lg) 0 !important;
+}
+
+.twitter-article-view [data-testid="longformRichTextComponent"] figure {
+  margin: var(--space-xl) 0 !important;
+}
+
+.twitter-article-view [data-testid="longformRichTextComponent"] figcaption {
+  font-family: var(--font-sans) !important;
+  font-size: 0.9em !important;
+  text-align: center !important;
+  margin-top: var(--space-sm) !important;
+  font-style: italic !important;
+}
+
+/* Horizontal Rules */
+.twitter-article-view [data-testid="longformRichTextComponent"] hr {
+  margin: var(--space-xl) auto !important;
+}
+
+/* Smooth Scrolling */
+.twitter-article-view html {
+  scroll-behavior: smooth !important;
+}
+
+/* ============================================
+   Responsive Design
+   ============================================ */
+@media (max-width: 768px) {
+  :root {
+    --font-size-base: 18px;
+    --font-size-lg: 20px;
+    --font-size-xl: 24px;
+    --font-size-2xl: 32px;
+    --font-size-3xl: 40px;
+    --content-padding: 1.5rem;
+    --space-lg: 2rem;
+    --space-xl: 3rem;
+  }
+}
+
+/* ============================================
+   Print Styles
+   ============================================ */
+@media print {
+  #twitter-reader-progress {
+    display: none !important;
+  }
+}
