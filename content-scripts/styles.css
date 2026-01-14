@@ -82,6 +82,11 @@
   display: none !important;
 }
 
+/* Hide the engagement bar (likes, retweets, etc.) below the article */
+.twitter-article-view article[data-testid="tweet"]:first-of-type [role="group"] {
+  display: none !important;
+}
+
 /* Hide the top navigation bar with "Article" heading */
 .twitter-article-view main div:has(> div > div > h2[role="heading"]) {
   display: none !important;
