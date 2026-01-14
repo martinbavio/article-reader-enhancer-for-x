@@ -94,9 +94,10 @@
   display: none !important;
 }
 
-/* Hide the top navigation bar with "Article" heading */
-.twitter-article-view main div:has(> div > div > h2[role="heading"]) {
-  display: none !important;
+/* Style the sticky header with author bar */
+#enhancer-author-bar {
+  flex: 1;
+  min-width: 0;
 }
 
 /* Hide the top article image area */

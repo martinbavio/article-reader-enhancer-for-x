@@ -123,11 +123,98 @@
   }
 
   /**
+   * Moves the author bar into the sticky header
+   */
+  function setupStickyAuthorBar() {
+    const main = document.querySelector('main');
+    if (!main) return;
+
+    // Check if already set up
+    if (document.getElementById('enhancer-author-bar')) return;
+
+    // Find the sticky header (contains "Article" heading)
+    const h2s = main.querySelectorAll('h2');
+    let stickyHeader = null;
+    let articleH2 = null;
+
+    for (const h2 of h2s) {
+      if (h2.textContent?.trim() === 'Article') {
+        articleH2 = h2;
+        // Go up to find the row container (with Back button, Article text, etc.)
+        stickyHeader = h2.parentElement?.parentElement?.parentElement;
+        break;
+      }
+    }
+
+    if (!stickyHeader || !articleH2) {
+      console.log('[Twitter Enhancer] Sticky header not found');
+      return;
+    }
+
+    // Find the author bar in the article
+    const article = main.querySelector('article[data-testid="tweet"]');
+    if (!article) return;
+
+    // Find the row containing avatar and author info
+    const avatarLink = article.querySelector('a[href][role="link"] img');
+    if (!avatarLink) return;
+
+    // Go up to find the full author row (contains avatar, name, and menu)
+    let authorRow = avatarLink;
+    for (let i = 0; i < 8; i++) {
+      if (authorRow?.parentElement) {
+        authorRow = authorRow.parentElement;
+      }
+    }
+
+    // Clone the author bar
+    const clonedAuthorBar = authorRow.cloneNode(true);
+    clonedAuthorBar.id = 'enhancer-author-bar';
+
+    // Hide the "Article" text and other elements, replace with author bar
+    // Find the middle section of the sticky header (where "Article" text is)
+    const headerContent = stickyHeader.querySelector('div');
+    if (headerContent) {
+      // Clear the existing content and add our author bar
+      const existingContent = stickyHeader.innerHTML;
+
+      // Keep the back button but replace the rest
+      const backButton = stickyHeader.querySelector('button[aria-label="Back"]');
+
+      // Create new header content
+      stickyHeader.innerHTML = '';
+
+      if (backButton) {
+        stickyHeader.appendChild(backButton.cloneNode(true));
+      }
+
+      // Add the author bar
+      clonedAuthorBar.style.flex = '1';
+      clonedAuthorBar.style.minWidth = '0';
+      stickyHeader.appendChild(clonedAuthorBar);
+
+      // Style the sticky header as a flex row
+      stickyHeader.style.display = 'flex';
+      stickyHeader.style.alignItems = 'center';
+      stickyHeader.style.gap = '12px';
+      stickyHeader.style.padding = '8px 16px';
+    }
+
+    // Hide the original author row in the article
+    authorRow.style.display = 'none';
+
+    console.log('[Twitter Enhancer] Author bar moved to sticky header');
+  }
+
+  /**
    * Hides distracting elements for focus mode
    */
   function hideDistractingElements() {
     const main = document.querySelector('main');
     if (!main) return;
+
+    // Set up the sticky author bar
+    setupStickyAuthorBar();
 
     // Find all cells in the timeline
     const allCells = Array.from(main.querySelectorAll('[data-testid="cellInnerDiv"]'));
