@@ -123,79 +123,11 @@
   }
 
   /**
-   * Replaces "Article" text with author info in the sticky header
-   */
-  function setupStickyAuthorBar() {
-    const main = document.querySelector('main');
-    if (!main) return;
-
-    // Check if already set up
-    if (document.querySelector('.enhancer-header-modified')) return;
-
-    // Find the "Article" heading
-    const h2s = main.querySelectorAll('h2');
-    let articleH2 = null;
-
-    for (const h2 of h2s) {
-      if (h2.textContent?.trim() === 'Article') {
-        articleH2 = h2;
-        break;
-      }
-    }
-
-    if (!articleH2) {
-      console.log('[Twitter Enhancer] Article heading not found');
-      return;
-    }
-
-    // Find the author info in the article
-    const article = main.querySelector('article[data-testid="tweet"]');
-    if (!article) return;
-
-    const userNameEl = article.querySelector('[data-testid="User-Name"]');
-    if (!userNameEl) return;
-
-    // Get author name and handle
-    const authorLink = userNameEl.querySelector('a[href][role="link"]');
-    const authorName = authorLink?.textContent?.trim() || '';
-    const handleEl = userNameEl.querySelector('a[href][tabindex="-1"]');
-    const authorHandle = handleEl?.textContent?.trim() || '';
-
-    // Get avatar image - try multiple selectors
-    let avatarImg = article.querySelector('img[src*="profile_images"]');
-    if (!avatarImg) {
-      avatarImg = article.querySelector('a[href][role="link"] img');
-    }
-    const avatarSrc = avatarImg?.src || '';
-
-    // Replace the "Article" text content with author info
-    const parentDiv = articleH2.parentElement;
-    if (parentDiv) {
-      // Create new content
-      parentDiv.innerHTML = `
-        <div style="display: flex; align-items: center; gap: 10px;">
-          ${avatarSrc ? `<img src="${avatarSrc}" style="width: 32px; height: 32px; border-radius: 50%;" />` : ''}
-          <div style="display: flex; flex-direction: column; line-height: 1.2;">
-            <span style="font-weight: 700; font-size: 15px; color: rgb(231, 233, 234);">${authorName}</span>
-            <span style="font-size: 13px; color: rgb(113, 118, 123);">${authorHandle}</span>
-          </div>
-        </div>
-      `;
-      parentDiv.classList.add('enhancer-header-modified');
-    }
-
-    console.log('[Twitter Enhancer] Author info added to sticky header');
-  }
-
-  /**
    * Hides distracting elements for focus mode
    */
   function hideDistractingElements() {
     const main = document.querySelector('main');
     if (!main) return;
-
-    // Set up the sticky author bar
-    setupStickyAuthorBar();
 
     // Find all cells in the timeline
     const allCells = Array.from(main.querySelectorAll('[data-testid="cellInnerDiv"]'));
