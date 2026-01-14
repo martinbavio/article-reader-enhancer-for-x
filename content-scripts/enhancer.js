@@ -123,87 +123,65 @@
   }
 
   /**
-   * Moves the author bar into the sticky header
+   * Replaces "Article" text with author info in the sticky header
    */
   function setupStickyAuthorBar() {
     const main = document.querySelector('main');
     if (!main) return;
 
     // Check if already set up
-    if (document.getElementById('enhancer-author-bar')) return;
+    if (document.querySelector('.enhancer-header-modified')) return;
 
-    // Find the sticky header (contains "Article" heading)
+    // Find the "Article" heading
     const h2s = main.querySelectorAll('h2');
-    let stickyHeader = null;
     let articleH2 = null;
 
     for (const h2 of h2s) {
       if (h2.textContent?.trim() === 'Article') {
         articleH2 = h2;
-        // Go up to find the row container (with Back button, Article text, etc.)
-        stickyHeader = h2.parentElement?.parentElement?.parentElement;
         break;
       }
     }
 
-    if (!stickyHeader || !articleH2) {
-      console.log('[Twitter Enhancer] Sticky header not found');
+    if (!articleH2) {
+      console.log('[Twitter Enhancer] Article heading not found');
       return;
     }
 
-    // Find the author bar in the article
+    // Find the author info in the article
     const article = main.querySelector('article[data-testid="tweet"]');
     if (!article) return;
 
-    // Find the row containing avatar and author info
-    const avatarLink = article.querySelector('a[href][role="link"] img');
-    if (!avatarLink) return;
+    const userNameEl = article.querySelector('[data-testid="User-Name"]');
+    if (!userNameEl) return;
 
-    // Go up to find the full author row (contains avatar, name, and menu)
-    let authorRow = avatarLink;
-    for (let i = 0; i < 8; i++) {
-      if (authorRow?.parentElement) {
-        authorRow = authorRow.parentElement;
-      }
+    // Get author name and handle
+    const authorLink = userNameEl.querySelector('a[href][role="link"]');
+    const authorName = authorLink?.textContent?.trim() || '';
+    const handleEl = userNameEl.querySelector('a[href][tabindex="-1"]');
+    const authorHandle = handleEl?.textContent?.trim() || '';
+
+    // Get avatar image
+    const avatarImg = article.querySelector('a[href][role="link"] img[src*="profile_images"]');
+    const avatarSrc = avatarImg?.src || '';
+
+    // Replace the "Article" text content with author info
+    const parentDiv = articleH2.parentElement;
+    if (parentDiv) {
+      // Create new content
+      parentDiv.innerHTML = `
+        <div style="display: flex; align-items: center; gap: 10px;">
+          ${avatarSrc ? `<img src="${avatarSrc}" style="width: 32px; height: 32px; border-radius: 50%;" />` : ''}
+          <div style="display: flex; flex-direction: column; line-height: 1.2;">
+            <span style="font-weight: 700; font-size: 15px; color: rgb(231, 233, 234);">${authorName}</span>
+            <span style="font-size: 13px; color: rgb(113, 118, 123);">${authorHandle}</span>
+          </div>
+        </div>
+      `;
+      parentDiv.classList.add('enhancer-header-modified');
     }
 
-    // Clone the author bar
-    const clonedAuthorBar = authorRow.cloneNode(true);
-    clonedAuthorBar.id = 'enhancer-author-bar';
-
-    // Hide the "Article" text and other elements, replace with author bar
-    // Find the middle section of the sticky header (where "Article" text is)
-    const headerContent = stickyHeader.querySelector('div');
-    if (headerContent) {
-      // Clear the existing content and add our author bar
-      const existingContent = stickyHeader.innerHTML;
-
-      // Keep the back button but replace the rest
-      const backButton = stickyHeader.querySelector('button[aria-label="Back"]');
-
-      // Create new header content
-      stickyHeader.innerHTML = '';
-
-      if (backButton) {
-        stickyHeader.appendChild(backButton.cloneNode(true));
-      }
-
-      // Add the author bar
-      clonedAuthorBar.style.flex = '1';
-      clonedAuthorBar.style.minWidth = '0';
-      stickyHeader.appendChild(clonedAuthorBar);
-
-      // Style the sticky header as a flex row
-      stickyHeader.style.display = 'flex';
-      stickyHeader.style.alignItems = 'center';
-      stickyHeader.style.gap = '12px';
-      stickyHeader.style.padding = '8px 16px';
-    }
-
-    // Hide the original author row in the article
-    authorRow.style.display = 'none';
-
-    console.log('[Twitter Enhancer] Author bar moved to sticky header');
+    console.log('[Twitter Enhancer] Author info added to sticky header');
   }
 
   /**
