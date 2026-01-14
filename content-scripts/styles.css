@@ -87,29 +87,10 @@
   display: none !important;
 }
 
-/* Compact the header and align to left edge */
+/* Compact the header width */
 .twitter-article-view header[role="banner"] {
-  width: 68px !important;
-  min-width: 68px !important;
-  max-width: 68px !important;
-  padding: 0 8px !important;
-  align-items: center !important;
-}
-
-/* Remove padding from header's inner container */
-.twitter-article-view header[role="banner"] > div {
-  padding: 0 !important;
-  width: 100% !important;
-}
-
-/* Center the nav icons */
-.twitter-article-view header[role="banner"] nav[aria-label="Primary"] {
-  align-items: center !important;
-}
-
-.twitter-article-view header[role="banner"] nav[aria-label="Primary"] a[role="link"] {
-  justify-content: center !important;
-  padding: 12px !important;
+  width: auto !important;
+  min-width: auto !important;
 }
 
 /* Hide floating action buttons at bottom right (Messages, Grok, etc.) */
